@@ -80,6 +80,8 @@ export default function Example() {
         id: makeid(15),
         nama: nama,
         nim: nim,
+        deleted: false,
+        kode_boking: makeid(5),
         tanggal_pengembalian: dayjs(tanggalPengembalian).format("YYYY-MM-DD"),
         tanggal_pinjam: dayjs(tanggalPeminjaman).format("YYYY-MM-DD"), 
       }
