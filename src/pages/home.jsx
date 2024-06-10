@@ -31,14 +31,19 @@ export default function Example() {
   const [tanggalPengembalian, setTanggalPengembalian] = useState(new Date())
   const [dataPeminjaman, setDataPeminjaman] = useState([])
   const [selectDataPeminjaman, setSelectDataPeminjaman]= useState(null)
+  const [selectRadio, setSelecRadio] = useState('')
 
   useEffect(() => {
-    getKdpt()
-  }, [])
+    if(selectRadio != ''){
+      getKdpt(selectRadio)
+    }
+  }, [selectRadio])
 
-  const getKdpt = async () => {
+  const getKdpt = async (collect) => {
+    console.log('sele', collect)
+    setDataPeminjaman([])
     const querys = query(
-      collection(db, "KDPK"),
+      collection(db, collect),
       where("delete", "==", false)
     );
     const querySnapshot = await getDocs(querys);
@@ -99,6 +104,7 @@ export default function Example() {
     <div className="h-screen w-full bg-white container mx-auto items-center justify-center px-4 py-4 relative text-black overflow-auto">
       <div className="w-full flex flex-col container mx-auto items-center mt-3">
         <Image src={Logo} width={200} height={80} />
+        <div className="mt-4 font-semibold text-2xl">Form Peminjaman Alat Laboratorium Kebidanan</div>
         <div className="mt-3 w-64">
           <FormInput
             value={nama}
@@ -139,17 +145,83 @@ export default function Example() {
        </div>
        <div className="mt-3 flex flex-col w-64">
         <label className="ml-1 text-sm text-[#333333]">
-            KDPK
+          Prasat
         </label>
-        <SelectComponent
-          data={dataPeminjaman}
-          value={selectDataPeminjaman}
-          className="mt-2"
-          onChange={(e) => {
-            setSelectDataPeminjaman(e)
-          }}
-          placeholder="Cari KDPK"
-        />
+        <div className="flex flex-col justify-start ml-1">
+          <div className="flex flex-row">
+            <input
+              className="mt-1"
+              type="radio"
+              checked={selectRadio == 'KDPK' ? true : false}
+              onChange={() => setSelecRadio('KDPK')}
+            />
+            <div className="ml-2 ">KDPK</div>
+           
+          </div>
+          <div className="flex flex-row">
+            <input
+              className=" mt-1"
+              type="radio"
+              checked={selectRadio == 'ANC' ? true : false}
+              onChange={() => setSelecRadio('ANC')}
+            />
+            <div className="ml-2">ANC</div>
+            
+          </div>
+          <div className="flex flex-row">
+            <input
+              className=" mt-1"
+              type="radio"
+              checked={selectRadio == 'INC' ? true : false}
+              onChange={() => setSelecRadio('INC')}
+            />
+            <div className="ml-2">INC</div>
+            
+          </div>
+          <div className="flex flex-row">
+          <input
+              className="mt-1"
+              type="radio"
+              checked={selectRadio == 'Asneo' ? true : false}
+              onChange={() => setSelecRadio('Asneo')}
+            />
+            <div className="ml-2">ASNEO</div>
+            
+          </div>
+          <div className="flex flex-row">
+            <input
+              className=" mt-1"
+              type="radio"
+              checked={selectRadio == 'KB' ? true : false}
+              onChange={() => setSelecRadio('KB')}
+            />
+            <div className="ml-2">KB</div>
+           
+          </div>
+          <div className="flex flex-row">
+            <input
+              className=" mt-1"
+              type="radio"
+              checked={selectRadio == 'Kegawatdaruratan' ? true : false}
+              onChange={() => setSelecRadio('Kegawatdaruratan')}
+            />
+            <div className="ml-2">KEGAWATDARURATAN</div>
+            
+          </div>
+        </div>
+        {
+          selectRadio != '' && (
+            <SelectComponent
+              data={dataPeminjaman}
+              value={selectDataPeminjaman}
+              className="mt-4"
+              onChange={(e) => {
+                setSelectDataPeminjaman(e)
+              }}
+              placeholder={"Cari " + selectRadio}
+            />
+          )
+        }
        </div>
        <div className="mt-3 w-64">
           <Button color={"primary"} size={"lg"} onClick={() => submit()}>Sumbit</Button>
